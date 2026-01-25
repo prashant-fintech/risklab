@@ -2,6 +2,14 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from datetime import date, timedelta
+import sys
+import os
+
+# Add the packages to Python path for Streamlit Cloud deployment
+current_dir = os.path.dirname(os.path.abspath(__file__))
+packages_dir = os.path.join(current_dir, '..', '..', 'packages')
+core_src = os.path.join(packages_dir, 'risklab_core', 'src')
+sys.path.insert(0, core_src)
 
 # Import Core Logic
 # Note: We import directly from modules to ensure safety against __init__ typos
