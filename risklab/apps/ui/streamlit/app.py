@@ -6,103 +6,27 @@ import sys
 import os
 
 # Add the packages to Python path for Streamlit Cloud deployment
-# Try multiple possible paths to find the risklab_core package
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
-# Debug: Show current directory structure
-st.write(f"Debug - Current directory: {current_dir}")
-st.write(f"Debug - Files in current dir: {os.listdir(current_dir)}")
+# Use the working path for Streamlit Cloud
+core_src = os.path.join(current_dir, '..', '..', 'packages', 'risklab_core', 'src')
+sys.path.insert(0, os.path.abspath(core_src))
 
-# Possible paths where risklab_core might be located
-possible_paths = [
-    # Local development path
-    os.path.join(current_dir, '..', '..', 'packages', 'risklab_core', 'src'),
-    # Alternative development path
-    os.path.join(current_dir, '..', '..', '..', 'packages', 'risklab_core', 'src'),
-    # Streamlit Cloud path (from repo root)
-    os.path.join(current_dir, '..', '..', '..', 'risklab', 'packages', 'risklab_core', 'src'),
-    # Another possible Streamlit Cloud path
-    os.path.join('/mount', 'src', 'risklab', 'risklab', 'packages', 'risklab_core', 'src'),
-    # Direct from repo root
-    os.path.join('/mount', 'src', 'risklab', 'packages', 'risklab_core', 'src'),
-]
-
-# Try each path until we find one that works
-for path in possible_paths:
-    abs_path = os.path.abspath(path)
-    st.write(f"Debug - Trying path: {abs_path}")
-    if os.path.exists(abs_path):
-        st.write(f"Debug - Found path: {abs_path}")
-        sys.path.insert(0, abs_path)
-        break
-else:
-    st.error("Could not find risklab_core package in any expected location")
-    st.write("Available directories:")
-    # Walk through the mount directory to understand structure
-    if os.path.exists('/mount/src'):
-        for root, dirs, files in os.walk('/mount/src'):
-            st.write(f"  {root}: {dirs}")
-
-# Try importing with better error handling
-try:
-    from risklab_core.market_data.sources import YahooFinanceSource
-    from risklab_core.contracts.market_data import (
-        PriceRequest, 
-        ReturnsSpec, 
-        ReSampleSpec, 
-        OutlierSpec,
-        AlignSpec
-    )
-    from risklab_core.market_data.transforms import (
-        to_returns, 
-        resample_prices, 
-        align_assets
-    )
-    from risklab_core.market_data.outliers import handle_outliers
-    
-    st.success("✅ Successfully imported RiskLab core modules!")
-    
-except ImportError as e:
-    st.error(f"Failed to import risklab_core modules: {e}")
-    st.write("Available sys.path:")
-    for path in sys.path:
-        st.write(f"  {path}")
-    
-    # Fallback: Create mock functions for demo purposes
-    st.warning("Using mock functions for demonstration")
-    
-    class MockSpec:
-        def __init__(self, **kwargs):
-            for k, v in kwargs.items():
-                setattr(self, k, v)
-    
-    ReturnsSpec = MockSpec
-    ReSampleSpec = MockSpec  
-    OutlierSpec = MockSpec
-    AlignSpec = MockSpec
-    
-    def to_returns(data, spec):
-        return data.pct_change().dropna()
-    
-    def resample_prices(data, spec):
-        return data.resample(spec.rule).last()
-    
-    def align_assets(data, spec):
-        return data.dropna()
-    
-    def handle_outliers(data, spec):
-        return data.clip(lower=data.quantile(0.01), upper=data.quantile(0.99))
-    
-    class YahooFinanceSource:
-        def fetch_prices(self, request):
-            # Return mock data
-            import numpy as np
-            dates = pd.date_range('2023-01-01', '2023-12-31', freq='D')
-            data = pd.DataFrame({
-                'AAPL': 150 + np.random.randn(len(dates)).cumsum(),
-                'MSFT': 250 + np.random.randn(len(dates)).cumsum(),
-            }, index=dates)
-            return data
+# Import Core Logic
+from risklab_core.market_data.sources import YahooFinanceSource
+from risklab_core.contracts.market_data import (
+    PriceRequest, 
+    ReturnsSpec, 
+    ReSampleSpec, 
+    OutlierSpec,
+    AlignSpec
+)
+from risklab_core.market_data.transforms import (
+    to_returns, 
+    resample_prices, 
+    align_assets
+)
+from risklab_core.market_data.outliers import handle_outliers
 
 # Page Config
 st.set_page_config(
