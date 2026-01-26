@@ -5,8 +5,11 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "hatchling>=1.28.0",
     "pandas>=2.3.3",
     "plotly>=6.5.2",
+    "risklab-adapters",
+    "risklab-core",
     "streamlit>=1.53.1",
     "yfinance>=1.1.0",
 ]
@@ -18,3 +21,7 @@ dev = [
     "pytest>=9.0.2",
     "ruff>=0.14.14",
 ]
+
+[tool.uv.sources]
+risklab-core = { path = "risklab/packages/risklab_core", editable = true }
+risklab-adapters = { path = "risklab/packages/risklab_adapters", editable = true }
