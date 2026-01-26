@@ -10,6 +10,8 @@ dependencies = [
     "streamlit>=1.30.0",
     "plotly>=5.18.0",
     "pydantic>=2.12.5",
+    "risklab-core",
+    "risklab-adapters",
 ]
 
 [dependency-groups]
@@ -18,3 +20,7 @@ dev = [
     "ruff>=0.1.0",
     "pyright>=1.1.0",
 ]
+
+[tool.uv.sources]
+risklab-core = { path = "packages/risklab_core", editable = true }
+risklab-adapters = { path = "packages/risklab_adapters", editable = true }

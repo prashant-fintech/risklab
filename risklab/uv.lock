@@ -1222,6 +1222,8 @@ dependencies = [
     { name = "pandas" },
     { name = "plotly" },
     { name = "pydantic" },
+    { name = "risklab-adapters" },
+    { name = "risklab-core" },
     { name = "streamlit" },
     { name = "yfinance" },
 ]
@@ -1238,6 +1240,8 @@ requires-dist = [
     { name = "pandas", specifier = ">=2.0.0" },
     { name = "plotly", specifier = ">=5.18.0" },
     { name = "pydantic", specifier = ">=2.12.5" },
+    { name = "risklab-adapters", editable = "packages/risklab_adapters" },
+    { name = "risklab-core", editable = "packages/risklab_core" },
     { name = "streamlit", specifier = ">=1.30.0" },
     { name = "yfinance", specifier = ">=0.2.0" },
 ]
@@ -1248,6 +1252,16 @@ dev = [
     { name = "pytest", specifier = ">=8.0.0" },
     { name = "ruff", specifier = ">=0.1.0" },
 ]
+
+[[package]]
+name = "risklab-adapters"
+version = "0.0.0"
+source = { editable = "packages/risklab_adapters" }
+
+[[package]]
+name = "risklab-core"
+version = "0.0.0"
+source = { editable = "packages/risklab_core" }
 
 [[package]]
 name = "rpds-py"
