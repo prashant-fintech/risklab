@@ -9,7 +9,7 @@ import os
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Use the working path for Streamlit Cloud
-core_src = os.path.join(current_dir, '..', '..', 'packages', 'risklab_core', 'src')
+core_src = os.path.join(current_dir, '..', '..', '..', 'packages', 'risklab_core', 'src')
 sys.path.insert(0, os.path.abspath(core_src))
 
 # Import Core Logic
